@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Media Keyboard Controls",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Control audio/video playback with keyboard shortcuts. P: play/pause, [: back 10s, ]: forward 10s (only when not typing in input fields).",
   "host_permissions": [
     "*://*/*"
