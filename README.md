@@ -1,38 +1,44 @@
 # Media Keyboard Controls
 
-A Chrome extension that lets you control audio/video playback with keyboard shortcuts — no mouse needed.
+一个轻量级 Chrome 浏览器插件，让你无需触碰鼠标即可控制任何网页上的音频/视频播放。只需按一下键盘快捷键，无论当前正在浏览哪个标签页。
 
-## Features
+## 核心场景
 
-- **Play / Pause** — press `P` to toggle playback
-- **Rewind 10s** — press `[` to jump back
-- **Fast-forward 10s** — press `]` to jump forward
-- **Cross-tab control** — control audio playing in another tab while browsing elsewhere
+**听播客/音乐时，切换标签页查资料** — 在标签页 A 播放音频，切到标签页 B 浏览网页，按下 `P` 即可暂停标签页 A 的音频，再按一下恢复播放。不用切回去找播放按钮。
 
-Shortcuts are automatically disabled when your cursor is in a text input field (input, textarea, contenteditable, code editors), so they won't interfere with typing.
+**工作流不中断** — 写代码、写文档时，背景音乐在别的标签页播放，手指不离开键盘主区域就能完成播放/暂停、快退/快进，零上下文切换。
 
-Works with any webpage that uses `<audio>` or `<video>` elements, including Shadow DOM and same-origin iframes.
+**多标签页工作** — 插件自动追踪各标签页的播放状态。最后开始播放的标签页优先被控制，该标签页暂停/关闭后自动回退到前一个仍在播放的标签页。
 
-## Keyboard Shortcuts
+## 快捷键
 
-| Key | Action |
-|-----|--------|
-| `P` | Play / Pause |
-| `[` | Back 10 seconds |
-| `]` | Forward 10 seconds |
+| 快捷键 | 功能 |
+|--------|------|
+| `P` | 播放 / 暂停 |
+| `[` | 后退 10 秒 |
+| `]` | 前进 10 秒 |
 
-## Installation
+快捷键在光标位于文本输入框（input、textarea、contenteditable、代码编辑器等）时自动禁用，不会干扰正常输入。仅在按下单独的 `P`/`[`/`]` 键时触发，配合 `Ctrl`/`Cmd`/`Alt` 修饰键时不生效。
 
-1. Download or clone this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable **Developer mode** (toggle in the top-right corner)
-4. Click **Load unpacked** and select the project folder
+## 兼容性
 
-## How It Works
+- 支持所有使用 `<audio>` 和 `<video>` 标签的网页（YouTube、Spotify Web、播客页面等）
+- 支持 Shadow DOM 内的媒体元素
+- 支持同源 iframe 内的媒体元素（跨域 iframe 内的媒体支持本地控制，暂不支持跨标签页控制）
+- 基于 Chrome Manifest V3，仅需 `storage` 权限，无隐私风险
 
-The extension injects a content script into every page that listens for `keydown` events. When a shortcut key is pressed and no text input is focused, it finds all `<audio>` and `<video>` elements on the page (including inside Shadow DOM and same-origin iframes) and controls them directly via the HTMLMediaElement API.
+## 安装
 
-A background service worker tracks which tab currently has media playing. When you press a shortcut on a tab without media, the background forwards the command to the tab that has active media, enabling cross-tab control.
+1. 下载或克隆本项目
+2. 打开 Chrome，地址栏输入 `chrome://extensions/`
+3. 打开右上角 **「开发者模式」** 开关
+4. 点击 **「加载已解压的扩展程序」**，选择项目目录
+
+## 多标签页控制原理
+
+每个标签页的内容脚本独立追踪本地 `<audio>` / `<video>` 元素的播放/暂停事件，通过 `chrome.storage.session` 上报到后台 Service Worker。后台维护各标签页的播放状态表（数据仅在浏览器会话期间保留，关闭浏览器后清空）。
+
+当用户在没有媒体元素的标签页按下快捷键，内容脚本向后台发送远程控制请求。后台找到目标标签页，将命令转发过去执行。
 
 ## License
 
