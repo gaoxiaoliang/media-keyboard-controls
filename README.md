@@ -7,6 +7,7 @@ A Chrome extension that lets you control audio/video playback with keyboard shor
 - **Play / Pause** — press `P` to toggle playback
 - **Rewind 10s** — press `[` to jump back
 - **Fast-forward 10s** — press `]` to jump forward
+- **Cross-tab control** — control audio playing in another tab while browsing elsewhere
 
 Shortcuts are automatically disabled when your cursor is in a text input field (input, textarea, contenteditable, code editors), so they won't interfere with typing.
 
@@ -30,6 +31,8 @@ Works with any webpage that uses `<audio>` or `<video>` elements, including Shad
 ## How It Works
 
 The extension injects a content script into every page that listens for `keydown` events. When a shortcut key is pressed and no text input is focused, it finds all `<audio>` and `<video>` elements on the page (including inside Shadow DOM and same-origin iframes) and controls them directly via the HTMLMediaElement API.
+
+A background service worker tracks which tab currently has media playing. When you press a shortcut on a tab without media, the background forwards the command to the tab that has active media, enabling cross-tab control.
 
 ## License
 
