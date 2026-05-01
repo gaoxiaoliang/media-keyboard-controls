@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Media Keyboard Controls",
+  "version": "1.0.0",
+  "description": "Control audio/video playback with keyboard shortcuts. P: play/pause, [: back 10s, ]: forward 10s (only when not typing in input fields).",
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_title": "Media Keyboard Controls",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
