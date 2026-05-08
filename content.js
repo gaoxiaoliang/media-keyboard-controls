@@ -109,6 +109,7 @@
       var el = elements[i];
       if (el.duration && isFinite(el.duration) && el.duration > 0) {
         el.currentTime = Math.max(0, Math.min(el.duration, el.currentTime + seconds));
+        el.play().catch(function() {});
       }
     }
   }
@@ -120,12 +121,14 @@
     var keyMap = {
       'p': 'togglePlayPause',
       'P': 'togglePlayPause',
+      ' ': 'togglePlayPause',
       '[': 'skipBack',
       ']': 'skipForward'
     };
 
     var codeMap = {
       'KeyP': 'togglePlayPause',
+      'Space': 'togglePlayPause',
       'BracketLeft': 'skipBack',
       'BracketRight': 'skipForward'
     };
